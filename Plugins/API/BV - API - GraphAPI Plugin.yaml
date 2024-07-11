@@ -8,4 +8,4 @@ Descriptor:
   SkillGroups:   
     - Format: API   
       Settings:   
-        OpenApiSpecUrl: https://raw.githubusercontent.com/Bluevoyant/BV-Copilot-for-Security/main/Plugins/API/BV%20-%20API%20-%20GraphAPI%20Plugin.yaml
+        OpenApiSpecUrl: https://raw.githubusercontent.com/Bluevoyant/BV-Copilot-for-Security/main/Plugins/API/OpenAPISpecs/BV%20-%20API%20-%20GraphAPI%20Spec.yaml
