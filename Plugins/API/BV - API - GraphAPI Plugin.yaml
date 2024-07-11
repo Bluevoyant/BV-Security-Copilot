@@ -1,17 +1,11 @@
-openapi: 3.0.0
-info:
-    title: Graph API Plugin to access data from Entra ID, Intune and other Microsoft solutions
-    description: Retrieve information from the Graph API.
-    version: "1.0"
-servers:
-    - url: https://graph.microsoft.com/v1.0
-paths:
-    /identity/conditionalAccess/policies:
-        get: 
-            operationId: ListCAPolicies
-            summary: List all Entra ID Conditional Access Policies. 
-            responses:
-                200:
-                  description: Successful retrieval. 
-                401:
-                  description: Unsuccessful authentication.
+Descriptor:   
+  Name: BV - GraphAPI Plugin  
+  DisplayName: BV - GraphAPI UPlugin   
+  Description: Retrieve information from the API with the current user permissions.   
+  Authorization:   
+    Type: AADDelegated   
+    EntraScopes: https://graph.microsoft.com/.default   
+  SkillGroups:   
+    - Format: API   
+      Settings:   
+        OpenApiSpecUrl: https://raw.githubusercontent.com/Bluevoyant/BV-Copilot-for-Security/main/Plugins/API/BV%20-%20API%20-%20GraphAPI%20Plugin.yaml
