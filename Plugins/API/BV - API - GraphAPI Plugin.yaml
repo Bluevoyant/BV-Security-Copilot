@@ -1,6 +1,6 @@
 Descriptor:   
   Name: BV - GraphAPI Plugin  
-  DisplayName: BV - GraphAPI UPlugin   
+  DisplayName: BV - GraphAPI Plugin   
   Description: Retrieve information from the API with the current user permissions.   
   Authorization:   
     Type: AADDelegated   
