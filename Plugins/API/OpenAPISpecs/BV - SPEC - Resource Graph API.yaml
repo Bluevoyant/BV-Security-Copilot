@@ -1,0 +1,39 @@
+openapi: 3.0.0
+
+info:
+    title: Resource Graph Queries
+    description: Skills to run queries on Azure Resource Graph.
+    version: "1.0.0"
+
+paths:
+  /providers/Microsoft.ResourceGraph/resources?api-version=2024-04-01:
+        post: 
+            operationId: RunQueryInAzureResourceGraph
+            summary: Run a query in Azure Resource Graph.
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                    schema:
+                        $ref: "#/components/schemas/QuerySchema"
+            responses:
+                200:
+                    description: Successful authentication. 
+                401:
+                    description: Unsuccessful authentication.
+components:
+  schemas:
+    QuerySchema:
+      type: object
+      title: Azure Resource Graph Query object.
+      description: This object contains the query details to be run in Azure Resource Graph. 
+      properties:
+        query:
+          description: Query to be executed on Azure Resource Graph. Only use single quotes in the query.
+          type: string
+          example: |
+            authorizationresources
+            | where type =~ 'microsoft.authorization/roleassignments'
+            | extend roleDefinitionId= tolower(tostring(properties.roleDefinitionId))
+      required:
+        - query
