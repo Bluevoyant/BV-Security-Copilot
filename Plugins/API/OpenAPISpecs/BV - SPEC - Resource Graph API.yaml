@@ -14,8 +14,8 @@ paths:
                 required: true
                 content:
                     application/json:
-                    schema:
-                        $ref: "#/components/schemas/QuerySchema"
+                        schema:
+                            $ref: "#/components/schemas/QuerySchema"
             responses:
                 200:
                     description: Successful authentication. 
