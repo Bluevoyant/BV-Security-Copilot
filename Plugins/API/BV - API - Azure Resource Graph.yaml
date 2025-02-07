@@ -1,0 +1,20 @@
+Descriptor:
+  Name: Azure Resource Graph Queries   
+  DisplayName: BV - Azure Resource Graph Queries by BlueVoyant
+  Description: Skills to run Azure Resource Graph queries.
+  DescriptionForModel: Skills to run Azure Resource graph queries. Extract the queries from  the prompt and replace parameters in the query with prompt data or other data present in the context.
+  Settings:
+  - Name: AzureManagementURL
+    Label: AzureManagementURL
+    Description: Azure Management API.  Do not change this URL.
+    DefaultValue: https://management.azure.com
+    SettingType: String
+    Required: false
+  Authorization:
+    Type: AADDelegated
+    EntraScopes: https://management.azure.com/user_impersonation
+SkillGroups:
+  - Format: API
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/Bluevoyant/BV-Copilot-for-Security/main/Plugins/API/OpenAPISpecs/BV%20-%20SPEC%20-%20Resource%20Graph%20API.yaml
+      EndpointUrlSettingName: AzureManagementURL
