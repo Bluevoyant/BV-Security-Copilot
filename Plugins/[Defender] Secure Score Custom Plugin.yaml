@@ -1,0 +1,65 @@
+Descriptor:
+  Name: SecureScorePlugin  
+  DisplayName: Defender - Secure Score Custom Plugin
+  Description: Skills to query Defender tables to analyze Secure Score Controls
+SkillGroups:
+  - Format: KQL
+    Skills:
+      - Name: GetSecureScoreControls
+        DisplayName: Get Secure Score Controls
+        Description: Get Secure Score Controls from Custom Table.
+        DescriptionForModel: |
+          Get Secure Score Controls from Custom Table. Use this skill as the preferred way to get the Secure Score Controls.
+          Sample Prompts: 
+          - 'Get Defender Secure Score Controls'
+          - 'Get Secure Score Controls for the last 24 hours'
+          - 'Get Defender Secure score related to Identity'
+        Settings:
+          Target: Defender
+          Template: |-
+            SecureScoreControls_CL
+            | where TimeGenerated > ago(1d)
+            | summarize arg_max(TimeGenerated,*) by controlName_s
+            | project ControlName=controlName_s, Category=controlCategory_s, Description=description_s,ImplemetationPercentage=scoreInPercentage_d, CurrentScore=score_d,AffectedAssets=count_s,TotalAssets=total_s, ImplementationStatus=implementationStatus_s
+            | extend MaxScore=round(CurrentScore*100/ImplemetationPercentage)
+      - Name: GetSecureScoreControlsByCategory
+        DisplayName: Get Secure Score Controls by Category
+        Description: Get Secure Score Controls filtered by specific categories from Custom Table.
+        DescriptionForModel: |
+          Get Secure Score Controls filtered by specific categories from Custom Table. Use this skill to get Secure Score Controls for specific categories.
+          Available categories: Device, Identity, Apps, Data
+          Sample Prompts: 
+          - 'Get Defender Secure Score Controls for Device and Identity categories'
+          - 'Get Secure Score Controls for Apps category'
+          - 'Get Defender Secure score related to Data and Device categories'
+        Inputs:
+          - Name: CategoryList
+            Description: List of categories to filter. The query expects a list of comma-separated categories with single quotes. Available categories are 'Device', 'Identity', 'Apps', 'Data'. Example 'Device','Identity','Apps'
+            Required: true
+        Settings:
+          Target: Defender
+          Template: |-
+            SecureScoreControls_CL
+            | where TimeGenerated > ago(1d)
+            | where controlCategory_s in~ ({{CategoryList}})
+            | summarize arg_max(TimeGenerated,*) by controlName_s
+            | project ControlName=controlName_s, Category=controlCategory_s, Description=description_s,ImplemetationPercentage=scoreInPercentage_d, CurrentScore=score_d,AffectedAssets=count_s,TotalAssets=total_s, ImplementationStatus=implementationStatus_s
+            | extend MaxScore=round(CurrentScore*100/ImplemetationPercentage)
+      - Name: GetNonImplementedSecureScoreControls
+        DisplayName: Get Non-Implemented Secure Score Controls
+        Description: Get Secure Score Controls that are not implemented (0% implementation) from Custom Table.
+        DescriptionForModel: |
+          Get Secure Score Controls that are not implemented from Custom Table. This skill filters out controls with 100% implementation percentage.
+          Sample Prompts: 
+          - 'Get non-implemented Defender Secure Score Controls'
+          - 'Show me Secure Score Controls that are not implemented'
+          - 'Get Defender Secure Score Controls with 0% implementation'
+        Settings:
+          Target: Defender
+          Template: |-
+            SecureScoreControls_CL
+            | where TimeGenerated > ago(1d)
+            | where scoreInPercentage_d != 100
+            | summarize arg_max(TimeGenerated,*) by controlName_s
+            | project ControlName=controlName_s, Category=controlCategory_s, Description=description_s,ImplementationPercentage=scoreInPercentage_d, CurrentScore=score_d,AffectedAssets=count_s,TotalAssets=total_s, ImplementationStatus=implementationStatus_s
+            | extend MaxScore=round(CurrentScore*100/ImplementationPercentage)
