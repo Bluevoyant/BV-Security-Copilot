@@ -1,0 +1,12 @@
+Descriptor:
+  Name: BV - Security API Plugin
+  DisplayName: BV - Security API Plugin by BlueVoyant
+  Description: API plugin for Security Copilot that accepts URL parameters and processes security actions with structured JSON request bodies.
+  DescriptionForModel: Plugin to execute security actions by accepting URL parameters and JSON request bodies containing action, type, description, and items fields. Use this plugin when you need to perform security operations with structured data input.
+  Authorization:
+    Type: AADDelegated
+    EntraScopes: https://graph.microsoft.com/.default
+SkillGroups:
+  - Format: API
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/Bluevoyant/BV-Security-Copilot/main/Plugins/API/OpenAPISpecs/BV%20-%20SPEC%20-%20Security%20API%20Plugin.yaml

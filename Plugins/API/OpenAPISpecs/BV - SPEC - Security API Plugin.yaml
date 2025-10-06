@@ -1,0 +1,74 @@
+openapi: 3.0.0
+
+info:
+    title: Security API Plugin
+    description: API plugin for Security Copilot that accepts URL parameters and JSON request bodies with action, type, description, and items fields.
+    version: "1.0.0"
+
+paths:
+  /security/endpoint:
+        post: 
+            operationId: ExecuteSecurityAction
+            summary: Execute a security action with the provided parameters.
+            parameters:
+              - name: url
+                in: query
+                required: true
+                description: URL parameter for the security endpoint
+                schema:
+                  type: string
+                  format: uri
+                  example: "https://api.example.com/security"
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/SecurityActionSchema"
+            responses:
+                200:
+                    description: Successful execution of security action.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    success:
+                                        type: boolean
+                                    message:
+                                        type: string
+                400:
+                    description: Bad request - invalid parameters or request body.
+                401:
+                    description: Unsuccessful authentication.
+                500:
+                    description: Internal server error.
+
+components:
+  schemas:
+    SecurityActionSchema:
+      type: object
+      title: Security Action Request Schema
+      description: Schema for security action requests containing action details.
+      properties:
+        action:
+          type: string
+          description: The action to be performed
+          example: "scan"
+        type:
+          type: string
+          description: The type of security operation
+          example: "vulnerability"
+        description:
+          type: string
+          description: Description of the security action
+          example: "Perform vulnerability scan on target"
+        items:
+          type: string
+          description: Items or targets for the security action
+          example: "192.168.1.1,192.168.1.2"
+      required:
+        - action
+        - type
+        - description
+        - items
